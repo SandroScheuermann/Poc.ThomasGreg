@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Poc.ThomasGreg.Application.DTOs;
 using Poc.ThomasGreg.Application.Services.Interfaces;
@@ -5,6 +6,7 @@ using Poc.ThomasGreg.Application.Services.Interfaces;
 namespace Poc.ThomasGreg.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class LogradouroController : ControllerBase
     {

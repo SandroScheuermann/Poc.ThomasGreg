@@ -1,11 +1,13 @@
+using Microsoft.IdentityModel.Tokens;
 using Poc.ThomasGreg.Application.Services;
 using Poc.ThomasGreg.Application.Services.Interfaces;
 using Poc.ThomasGreg.Domain.Interfaces;
 using Poc.ThomasGreg.Infra.Repositories;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -14,15 +16,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "sua_aplicacao",
-            ValidAudience = "sua_aplicacao",
+            ValidIssuer = "valid_issuer",
+            ValidAudience = "valid_audience",
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("sua_chave_super_secreta_32+caracteres"))
+                Encoding.ASCII.GetBytes("VascoDaGamaCampeaoEterno1998Libertadores32Caracteres"))
         };
     });
 
 
-builder.Services.AddAuthorization();
 
 
 builder.Services.AddControllers();
@@ -49,6 +50,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

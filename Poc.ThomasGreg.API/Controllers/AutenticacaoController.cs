@@ -34,7 +34,6 @@ namespace Poc.ThomasGreg.API.Controllers
             await _autenticacaoService.RegistrarUsuarioAsync(registrarUsuarioDTO); 
 
             return Ok();
-        }
-
+        } 
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Poc.ThomasGreg.Application.DTOs;
 using Poc.ThomasGreg.Application.Services.Interfaces;
@@ -5,6 +6,7 @@ using Poc.ThomasGreg.Application.Services.Interfaces;
 namespace Poc.ThomasGreg.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
@@ -15,7 +17,7 @@ namespace Poc.ThomasGreg.API.Controllers
             _clienteService = clienteService;
         }
 
-        [HttpPost]
+        [HttpPost] 
         public async Task<IActionResult> CriarCliente([FromBody] CadastrarClienteDTO clienteDTO)
         {  
             var result = await _clienteService.CriarClienteAsync(clienteDTO);
@@ -28,7 +30,7 @@ namespace Poc.ThomasGreg.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] 
         public async Task<IActionResult> AtualizarCliente(Guid id, [FromBody]AtualizarClienteDTO atualizarClienteDTO)
         { 
             atualizarClienteDTO.Id = id;
@@ -38,7 +40,7 @@ namespace Poc.ThomasGreg.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] 
         public async Task<IActionResult> RemoverCliente(Guid id)
         {
             await _clienteService.RemoverClienteAsync(id);
@@ -46,7 +48,7 @@ namespace Poc.ThomasGreg.API.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet] 
         public async Task<IActionResult> ObterClientes()
         {
             var result =  await _clienteService.ObterClientesAsync();
@@ -54,7 +56,7 @@ namespace Poc.ThomasGreg.API.Controllers
             return Ok(result);
         } 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] 
         public async Task<IActionResult> ObterClientePorId(Guid id)
         {
             var result = await _clienteService.ObterClientePorIdAsync(id);

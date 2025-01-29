@@ -18,7 +18,9 @@ namespace Poc.ThomasGreg.Application.Services
                 [
                 new Claim(ClaimTypes.Email, email)
                 ]),
-                Expires = DateTime.UtcNow.AddHours(2), 
+                Expires = DateTime.UtcNow.AddHours(2),
+                Issuer = "valid_issuer",
+                Audience = "valid_audience",
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature
