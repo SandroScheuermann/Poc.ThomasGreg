@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Poc.ThomasGreg.Application.DTOs;
 using Poc.ThomasGreg.Application.Services.Interfaces;
 
 namespace Poc.ThomasGreg.API.Controllers
 {
-    [ApiController]
+	[ApiController]
     [Authorize]
     [Route("api/[controller]")]
     public class ClienteController : ControllerBase
@@ -17,18 +18,31 @@ namespace Poc.ThomasGreg.API.Controllers
             _clienteService = clienteService;
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<IActionResult> CriarCliente([FromBody] CadastrarClienteDTO clienteDTO)
-        {  
-            var result = await _clienteService.CriarClienteAsync(clienteDTO);
-             
-            if(result < 1)
+        {
+            try
             {
-                return NotFound();
-            }
+                var result = await _clienteService.CriarClienteAsync(clienteDTO);
 
-            return Ok(result);
+                if (result < 1)
+                {
+                    return NotFound("Cliente não foi criado.");
+                }
+
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627 || ex.Number == 2601)
+                {
+                    return Conflict(new { message = "O e-mail informado já está em uso." });
+                }
+
+                return StatusCode(500, new { message = "Erro interno no servidor." });
+            }
         }
+
 
         [HttpPut("{id}")] 
         public async Task<IActionResult> AtualizarCliente(Guid id, [FromBody]AtualizarClienteDTO atualizarClienteDTO)

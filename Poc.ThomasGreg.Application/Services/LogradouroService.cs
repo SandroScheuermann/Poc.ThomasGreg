@@ -34,7 +34,8 @@ namespace Poc.ThomasGreg.Application.Services
             }
 
             logradouro.Endereco = logradouroDTO.Endereco ?? logradouro.Endereco;
-             
+            logradouro.ClienteId = logradouroDTO.ClienteId ?? logradouro.ClienteId;
+
             return await _logradouroRepository.AtualizarLogradouroAsync(logradouro);
         }
 
@@ -50,6 +51,11 @@ namespace Poc.ThomasGreg.Application.Services
         public async Task RemoverLogradouroAsync(Guid id)
         {
             await _logradouroRepository.RemoverLogradouroAsync(id);
+        }
+
+        public async Task<Logradouro?> ObterLogradouroPorIdAsync(Guid id)
+        {
+            return await _logradouroRepository.ObterLogradourosPorIdAsync(id);
         }
     }
 }

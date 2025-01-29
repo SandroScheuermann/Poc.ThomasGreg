@@ -33,6 +33,7 @@ namespace Poc.ThomasGreg.Infra.Repositories
             var parameters = new
             {
                 logradouro.Endereco,
+                logradouro.ClienteId,
                 logradouro.Id,
             };
 

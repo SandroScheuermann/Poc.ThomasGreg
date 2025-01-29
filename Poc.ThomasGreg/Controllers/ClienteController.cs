@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Poc.ThomasGreg.MVC.DTOs;
+using Poc.ThomasGreg.MVC.Models;
 
-namespace Poc.ThomasGreg.Controllers
+namespace Poc.ThomasGreg.MVC.Controllers
 {
     public class ClienteController : Controller
     {
@@ -24,9 +25,7 @@ namespace Poc.ThomasGreg.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-            Console.WriteLine($"Authorization Header: {_httpClient.DefaultRequestHeaders.Authorization}");
-
+        { 
             var response = await _httpClient.GetAsync("Cliente");
             if (response.IsSuccessStatusCode)
             {
@@ -47,7 +46,7 @@ namespace Poc.ThomasGreg.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Adicionar(ClienteDTO clienteDto)
-        {
+        { 
             if (clienteDto.LogotipoFile != null && clienteDto.LogotipoFile.Length > 0)
             {
                 using var memoryStream = new MemoryStream();
@@ -66,10 +65,20 @@ namespace Poc.ThomasGreg.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                TempData["SuccessMessage"] = "Cliente cadastrado com sucesso.";
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", "Erro ao adicionar cliente.");
+            if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorViewModel>();
+                ModelState.AddModelError("", error?.Message?.ToString() ?? "Erro ao cadastrar cliente."); 
+            }
+            else
+            {
+                ModelState.AddModelError("", "Erro desconhecido ao cadastrar cliente."); 
+            }
+             
             return View(clienteDto);
         }
 
@@ -82,6 +91,7 @@ namespace Poc.ThomasGreg.Controllers
                 var cliente = await response.Content.ReadFromJsonAsync<ClienteDTO>();
                 return View(cliente); 
             }
+             
             return View("Erro");
         } 
 

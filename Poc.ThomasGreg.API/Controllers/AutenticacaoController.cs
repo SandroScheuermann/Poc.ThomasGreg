@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Poc.ThomasGreg.Application.DTOs;
 using Poc.ThomasGreg.Application.Services.Interfaces;
 
@@ -31,7 +32,19 @@ namespace Poc.ThomasGreg.API.Controllers
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar([FromBody] RegistrarUsuarioDTO registrarUsuarioDTO)
         {
-            await _autenticacaoService.RegistrarUsuarioAsync(registrarUsuarioDTO); 
+            try
+            { 
+                await _autenticacaoService.RegistrarUsuarioAsync(registrarUsuarioDTO);
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627 || ex.Number == 2601)
+                {
+                    return Conflict(new { message = "O e-mail informado já está em uso." });
+                }
+
+                return StatusCode(500, new { message = "Erro interno no servidor." });
+            }
 
             return Ok();
         } 

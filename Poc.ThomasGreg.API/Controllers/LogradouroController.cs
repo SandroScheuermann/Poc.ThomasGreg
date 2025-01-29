@@ -51,10 +51,18 @@ namespace Poc.ThomasGreg.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{clienteId}")]
+        [HttpGet("Cliente/{clienteId}")]
         public async Task<IActionResult> ListarLogradourosPorClienteId(Guid clienteId)
         {
             var result = await _logradouroService.ObterLogradourosPorClienteIdAsync(clienteId);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> ListarLogradouroPorId(Guid id)
+        {
+            var result = await _logradouroService.ObterLogradouroPorIdAsync(id);
 
             return Ok(result);
         }

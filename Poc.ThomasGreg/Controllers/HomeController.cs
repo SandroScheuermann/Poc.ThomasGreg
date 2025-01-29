@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Poc.ThomasGreg.MVC.DTOs;
+using Poc.ThomasGreg.MVC.Models;
 
-namespace Poc.ThomasGreg.Controllers
+namespace Poc.ThomasGreg.MVC.Controllers
 {
     public class HomeController : Controller
     {
@@ -44,23 +46,25 @@ namespace Poc.ThomasGreg.Controllers
         } 
 
         [HttpPost]
-        public async Task<IActionResult> Register(string nome, string email, string senha)
-        {  
-            var registerDto = new
-            {
-                Nome = nome,
-                Email = email,
-                Senha = senha
-            };
-
-            var response = await _httpClient.PostAsJsonAsync("Autenticacao/registrar", registerDto);
+        public async Task<IActionResult> Register(UsuarioDTO usuarioDTO)
+        {    
+            var response = await _httpClient.PostAsJsonAsync("Autenticacao/registrar", usuarioDTO);
 
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
+            } 
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorViewModel>();
+                ModelState.AddModelError("", error?.Message?.ToString() ?? "Erro ao cadastrar usuário.");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Erro desconhecido ao cadastrar usuário.");
             }
 
-            ModelState.AddModelError(string.Empty, "Erro ao registrar o usuário.");
             return View("Register");
         }
 

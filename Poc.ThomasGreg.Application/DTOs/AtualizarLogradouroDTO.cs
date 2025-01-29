@@ -3,6 +3,7 @@
     public class AtualizarLogradouroDTO
     { 
         public Guid Id { get; set; }
-        public required string Endereco { get; set; }  
+        public Guid? ClienteId { get; set; }
+        public string? Endereco { get; set; }  
     }
 }

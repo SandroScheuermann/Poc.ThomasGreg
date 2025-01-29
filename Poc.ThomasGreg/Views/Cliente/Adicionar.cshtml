@@ -4,20 +4,33 @@
     <div class="card p-4 shadow-sm" style="width: 100%; max-width: 500px;">
         <h1 class="mb-4 text-center">Adicionar Cliente</h1>
 
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+        } 
+
         <form asp-action="Adicionar" method="post" enctype="multipart/form-data">
             <div class="form-group mb-3">
                 <label for="Nome">Nome:</label>
                 <input type="text" name="Nome" class="form-control" placeholder="Digite o nome do cliente" required />
+                <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label for="Email">E-mail:</label>
                 <input type="email" name="Email" class="form-control" placeholder="Digite o e-mail do cliente" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label for="LogotipoFile">Logotipo:</label>
                 <input type="file" name="LogotipoFile" class="form-control" id="Logotipo" accept="image/*" onchange="previewImage(event)" required />
+                <span asp-validation-for="Logotipo" class="text-danger"></span> 
             </div> 
 
             <div class="form-group text-center mb-3">
@@ -54,4 +67,6 @@
             }
         }
     </script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial") 
 }

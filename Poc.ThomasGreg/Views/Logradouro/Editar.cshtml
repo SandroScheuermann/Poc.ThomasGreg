@@ -1,0 +1,38 @@
+﻿@model Poc.ThomasGreg.MVC.DTOs.LogradouroDTO
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card p-4 shadow-sm" style="width: 100%; max-width: 500px;">
+        <h1 class="mb-4 text-center">Editar Logradouro</h1>
+
+        <form asp-action="Editar" method="post">
+            <input type="hidden" name="Id" value="@Model.Id" />
+
+            <div class="form-group mb-3">
+                <label for="Endereco">Endereço:</label>
+                <input type="text" name="Endereco" class="form-control" value="@Model.Endereco" placeholder="Digite o endereço do logradouro" required />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="ClienteId">Cliente:</label>
+                <select name="ClienteId" class="form-control" required>
+                    <option value="">Selecione um cliente</option>
+                    @foreach (var cliente in ViewBag.Clientes)
+                    {
+                        if (cliente.Selected)
+                        {
+                            <option value="@cliente.Value" selected>@cliente.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@cliente.Value">@cliente.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>

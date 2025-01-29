@@ -1,0 +1,67 @@
+﻿@using Poc.ThomasGreg.MVC.DTOs
+@model IEnumerable<LogradouroDTO>
+
+@{
+	ViewData["Title"] = "Logradouros";
+	var clientes = ViewBag.Clientes as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+<div class="card shadow-sm p-4">
+	<h1 class="mb-4 text-center">Logradouros</h1>
+
+	<form asp-action="Index" method="get" class="d-flex mb-3">
+		<select name="clienteId" class="form-control me-2">
+			@if (ViewBag.ClienteSelecionado == null)
+			{
+				<option value="" selected>Todos</option>
+			}
+			else
+			{
+				<option value="">Todos</option>
+			}
+
+			@foreach (var cliente in ViewBag.Clientes)
+			{
+				if (ViewBag.ClienteSelecionado != null && cliente.Value == ViewBag.ClienteSelecionado.ToString())
+				{
+					<option value="@cliente.Value" selected>@cliente.Text</option>
+				}
+				else
+				{
+					<option value="@cliente.Value">@cliente.Text</option>
+				}
+			}
+		</select>
+		<button type="submit" class="btn btn-primary">Filtrar</button>
+	</form>
+
+
+	<div class="d-flex justify-content-end mb-3">
+		<a asp-action="Adicionar" class="btn btn-primary">Adicionar Logradouro</a>
+	</div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>ClienteId</th>
+				<th>Endereco</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var logradouro in Model)
+			{
+				<tr>
+					<td>@logradouro.ClienteId</td>
+					<td>@logradouro.Endereco</td>
+					<td>
+						<a asp-action="Editar" asp-route-id="@logradouro.Id" class="btn btn-warning btn-sm">Editar</a>
+						<form asp-action="Deletar" asp-route-id="@logradouro.Id" method="post" style="display:inline;">
+							<button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+						</form>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
