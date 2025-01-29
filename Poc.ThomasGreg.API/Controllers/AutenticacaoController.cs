@@ -18,7 +18,7 @@ namespace Poc.ThomasGreg.API.Controllers
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
-        {
+        { 
             var token = await _autenticacaoService.AutenticarUsuarioAsync(loginDto);
 
             if (string.IsNullOrEmpty(token))

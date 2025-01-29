@@ -1,9 +1,9 @@
 ﻿# Etapa base para execução do app
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
 EXPOSE 5000
 EXPOSE 5001
+ENV ASPNETCORE_URLS=http://+:5000
 
 # Etapa de construção
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build

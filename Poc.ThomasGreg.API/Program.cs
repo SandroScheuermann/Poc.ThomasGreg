@@ -23,7 +23,14 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
-
+if (builder.Environment.IsDevelopment())
+{
+	builder.WebHost.ConfigureKestrel(options =>
+	{
+		options.ListenAnyIP(5000);
+		options.ListenAnyIP(5001);
+	});
+}
 
 
 builder.Services.AddControllers();
@@ -46,9 +53,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
+} 
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -11,12 +11,10 @@ services:
       - "1433:1433"
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "P@ssw0rd"
+      SA_PASSWORD: "P@ssw0rd" 
     volumes:
       - db_data:/var/opt/mssql
-    restart: unless-stopped
-    networks:
-      - thomasgreg_network
+    restart: unless-stopped 
 
   api:
     build:
@@ -27,11 +25,9 @@ services:
       - "5001:5001"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=ThomasGregDb;User=sa;Password=P@ssw0rd
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=ThomasGregDb;User=sa;Password=P@ssw0rd;TrustServerCertificate=True;Integrated Security=False;
     depends_on:
-      - db 
-    networks:
-      - thomasgreg_network
+      - db  
 
   mvc:
     build:
@@ -44,9 +40,7 @@ services:
       - api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - API_BASE_URL=http://api:5001
-    networks:
-      - thomasgreg_network
+      - API_BASE_URL=http://api:5001 
 
 networks:
   thomasgreg_network:
