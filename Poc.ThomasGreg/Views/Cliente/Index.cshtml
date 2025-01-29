@@ -1,0 +1,39 @@
+﻿@using Poc.ThomasGreg.MVC.DTOs
+@model IEnumerable<ClienteDTO>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="card shadow-sm p-4">
+    <h1 class="mb-4 text-center">Clientes</h1>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Adicionar" class="btn btn-primary">Adicionar Cliente</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Email</td>
+                    <td>
+                        <a asp-action="Editar" asp-route-id="@cliente.Id" class="btn btn-warning btn-sm">Editar</a>
+                        <form asp-action="Deletar" asp-route-id="@cliente.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

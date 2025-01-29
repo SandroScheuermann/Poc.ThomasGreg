@@ -1,32 +1,89 @@
 using Microsoft.AspNetCore.Mvc;
-using Poc.ThomasGreg.Models;
-using System.Diagnostics;
 
 namespace Poc.ThomasGreg.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly HttpClient _httpClient;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
-            _logger = logger;
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7298/api/");
         }
 
         public IActionResult Index()
-        {
-            return View();
+        { 
+            if (HttpContext.Session.GetString("AuthToken") != null)
+            {
+                return View("Index");
+            }
+            return RedirectToAction("Login");
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string senha)
+        {  
+            var loginDto = new
+            {
+                Email = email,
+                Senha = senha
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("Autenticacao/login", loginDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var token = await response.Content.ReadAsStringAsync();
+                HttpContext.Session.SetString("AuthToken", token);
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError(string.Empty, "E-mail ou senha inválidos.");
+            return View("Login");
+        } 
+
+        [HttpPost]
+        public async Task<IActionResult> Register(string nome, string email, string senha)
+        {  
+            var registerDto = new
+            {
+                Nome = nome,
+                Email = email,
+                Senha = senha
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("Autenticacao/registrar", registerDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError(string.Empty, "Erro ao registrar o usuário.");
+            return View("Register");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Register()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View("Register");
+        }
+
+        public IActionResult Login()
+        {
+            if (HttpContext.Session.GetString("AuthToken") != null)
+            {
+                return RedirectToAction("Index");
+            } 
+
+            return View("Login");
+        } 
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("AuthToken");
+            return RedirectToAction("Login");
         }
     }
+
 }

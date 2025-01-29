@@ -1,0 +1,132 @@
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using Poc.ThomasGreg.MVC.DTOs;
+
+namespace Poc.ThomasGreg.Controllers
+{
+    public class ClienteController : Controller
+    {
+        private readonly HttpClient _httpClient;
+
+        public ClienteController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+        {
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7298/api/");
+             
+            var tokenJson = httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
+
+            if (!string.IsNullOrEmpty(tokenJson))
+            {
+                var token = JObject.Parse(tokenJson)["token"]?.ToString();
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            Console.WriteLine($"Authorization Header: {_httpClient.DefaultRequestHeaders.Authorization}");
+
+            var response = await _httpClient.GetAsync("Cliente");
+            if (response.IsSuccessStatusCode)
+            {
+                var clientes = await response.Content.ReadFromJsonAsync<IEnumerable<ClienteDTO>>();
+                return View(clientes);
+            }
+
+            ModelState.AddModelError("", "Erro ao carregar clientes.");
+            return View(Enumerable.Empty<ClienteDTO>());
+        }
+
+
+        [HttpGet]
+        public IActionResult Adicionar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Adicionar(ClienteDTO clienteDto)
+        {
+            if (clienteDto.LogotipoFile != null && clienteDto.LogotipoFile.Length > 0)
+            {
+                using var memoryStream = new MemoryStream();
+                await clienteDto.LogotipoFile.CopyToAsync(memoryStream);
+                clienteDto.Logotipo = memoryStream.ToArray();
+            }
+             
+            var payload = new
+            {
+                clienteDto.Nome,
+                clienteDto.Email,
+                clienteDto.Logotipo
+            };
+             
+            var response = await _httpClient.PostAsJsonAsync("Cliente", payload);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Erro ao adicionar cliente.");
+            return View(clienteDto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Editar(Guid id)
+        {
+            var response = await _httpClient.GetAsync($"Cliente/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var cliente = await response.Content.ReadFromJsonAsync<ClienteDTO>();
+                return View(cliente); 
+            }
+            return View("Erro");
+        } 
+
+        [HttpPost]
+        public async Task<IActionResult> Editar(ClienteDTO clienteDto)
+        {
+            if (clienteDto.LogotipoFile != null && clienteDto.LogotipoFile.Length > 0)
+            {
+                using var memoryStream = new MemoryStream();
+                await clienteDto.LogotipoFile.CopyToAsync(memoryStream);
+                clienteDto.Logotipo = memoryStream.ToArray();
+            }
+
+            var payload = new
+            {
+                clienteDto.Nome,
+                clienteDto.Email,
+                clienteDto.Logotipo
+            };
+
+            var response = await _httpClient.PutAsJsonAsync($"Cliente/{clienteDto.Id}", payload);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Erro ao atualizar cliente.");
+            return View(clienteDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Deletar(Guid id)
+        {
+            var response = await _httpClient.DeleteAsync($"Cliente/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Erro ao excluir cliente.");
+            return RedirectToAction("Index");
+        }
+
+    }
+
+}

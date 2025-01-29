@@ -1,0 +1,57 @@
+﻿@model Poc.ThomasGreg.MVC.DTOs.ClienteDTO
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card p-4 shadow-sm" style="width: 100%; max-width: 500px;">
+        <h1 class="mb-4 text-center">Adicionar Cliente</h1>
+
+        <form asp-action="Adicionar" method="post" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label for="Nome">Nome:</label>
+                <input type="text" name="Nome" class="form-control" placeholder="Digite o nome do cliente" required />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Email">E-mail:</label>
+                <input type="email" name="Email" class="form-control" placeholder="Digite o e-mail do cliente" required />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="LogotipoFile">Logotipo:</label>
+                <input type="file" name="LogotipoFile" class="form-control" id="Logotipo" accept="image/*" onchange="previewImage(event)" required />
+            </div> 
+
+            <div class="form-group text-center mb-3">
+                <label>Pré-visualização do Logotipo:</label>
+                <img id="preview" style="max-width: 200px; max-height: 200px; display: none; border: 1px solid #ddd; margin-top: 10px;" />
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('preview');
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                preview.src = '';
+            }
+        }
+    </script>
+}
