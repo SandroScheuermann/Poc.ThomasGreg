@@ -12,7 +12,7 @@ namespace Poc.ThomasGreg.MVC.Controllers
         public ClienteController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7298/api/");
+            _httpClient.BaseAddress = new Uri("https://localhost:5000/api/");
              
             var tokenJson = httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
 
