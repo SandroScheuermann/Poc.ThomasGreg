@@ -1,0 +1,6 @@
+@Poc.ThomasGreg.API_HostAddress = http://localhost:5251
+
+GET {{Poc.ThomasGreg.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
