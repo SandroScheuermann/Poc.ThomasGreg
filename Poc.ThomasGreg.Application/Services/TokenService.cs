@@ -10,7 +10,7 @@ namespace Poc.ThomasGreg.Application.Services
         public static string GerarToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("chave_secreta_poc");
+            var key = Encoding.ASCII.GetBytes("VascoDaGamaCampeaoEterno1998Libertadores32Caracteres");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

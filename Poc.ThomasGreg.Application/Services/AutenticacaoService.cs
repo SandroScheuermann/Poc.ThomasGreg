@@ -14,7 +14,7 @@ namespace Poc.ThomasGreg.Application.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public async Task RegistrarUsuarioAsync(UsuarioDTO usuarioDTO)
+        public async Task RegistrarUsuarioAsync(RegistrarUsuarioDTO usuarioDTO)
         {
             var senhaHash = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Senha);
 

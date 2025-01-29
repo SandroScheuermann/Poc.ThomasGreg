@@ -16,38 +16,50 @@ namespace Poc.ThomasGreg.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CriarCliente([FromBody] ClienteDTO clienteDTO)
-        {
-            //TODO: Criar validações para email
-
+        public async Task<IActionResult> CriarCliente([FromBody] CadastrarClienteDTO clienteDTO)
+        {  
             var result = await _clienteService.CriarClienteAsync(clienteDTO);
              
             if(result < 1)
             {
                 return NotFound();
             }
-             
+
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult ObterClientePorId(Guid id)
-        {
-            return null;
-        }
-
         [HttpPut("{id}")]
-        public IActionResult AtualizarCliente(Guid id)
-        {
-            return null;
+        public async Task<IActionResult> AtualizarCliente(Guid id, [FromBody]AtualizarClienteDTO atualizarClienteDTO)
+        { 
+            atualizarClienteDTO.Id = id;
+
+            var result = await _clienteService.AtualizarClienteAsync(atualizarClienteDTO);
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult RemoverCliente(Guid id)
+        public async Task<IActionResult> RemoverCliente(Guid id)
         {
-            _clienteService.RemoverClienteAsync(id);
+            await _clienteService.RemoverClienteAsync(id);
 
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObterClientes()
+        {
+            var result =  await _clienteService.ObterClientesAsync();
+
+            return Ok(result);
+        } 
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ObterClientePorId(Guid id)
+        {
+            var result = await _clienteService.ObterClientePorIdAsync(id);
+
+            return Ok(result);
         }
     }
 }

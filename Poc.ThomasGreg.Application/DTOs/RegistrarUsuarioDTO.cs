@@ -1,6 +1,6 @@
 ﻿namespace Poc.ThomasGreg.Application.DTOs
 {
-    public class UsuarioDTO
+    public class RegistrarUsuarioDTO
     {
         public required string Nome { get; set; }
         public required string Email { get; set; } 

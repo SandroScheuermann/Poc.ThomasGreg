@@ -4,7 +4,8 @@ namespace Poc.ThomasGreg.Application.Services.Interfaces
 {
     public interface IAutenticacaoService
     { 
-        public Task RegistrarUsuarioAsync(UsuarioDTO usuarioDTO);
+        public Task RegistrarUsuarioAsync(RegistrarUsuarioDTO usuarioDTO);
+        public Task<string> AutenticarUsuarioAsync(LoginDTO loginDTO);
 
     }
 }

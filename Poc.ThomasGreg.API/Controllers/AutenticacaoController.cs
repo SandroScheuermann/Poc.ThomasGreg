@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Poc.ThomasGreg.Application.DTOs;
+using Poc.ThomasGreg.Application.Services.Interfaces;
 
 namespace Poc.ThomasGreg.API.Controllers
 {
@@ -7,24 +8,32 @@ namespace Poc.ThomasGreg.API.Controllers
     [Route("api/[controller]")]
     public class AutenticacaoController : ControllerBase
     {
-        private readonly IUsuarioService _usuarioService;
+        private readonly IAutenticacaoService _autenticacaoService;
 
-        public AutenticacaoController(IUsuarioService usuarioService)
+        public AutenticacaoController(IAutenticacaoService usuarioService)
         {
-            _usuarioService = usuarioService;
+            _autenticacaoService = usuarioService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            var token = await _usuarioService.AutenticarUsuarioAsync(loginDto.Email, loginDto.Senha);
+            var token = await _autenticacaoService.AutenticarUsuarioAsync(loginDto);
 
-            if (token == null)
+            if (string.IsNullOrEmpty(token))
             {
                 return Unauthorized(new { Message = "Email ou senha inválidos." });
             }
 
             return Ok(new { Token = token });
+        }
+
+        [HttpPost("registrar")]
+        public async Task<IActionResult> Registrar([FromBody] RegistrarUsuarioDTO registrarUsuarioDTO)
+        {
+            await _autenticacaoService.RegistrarUsuarioAsync(registrarUsuarioDTO); 
+
+            return Ok();
         }
 
     }

@@ -30,7 +30,7 @@ namespace Poc.ThomasGreg.Infra.Repositories
 
             return result;
         }
-        public async Task AtualizarClienteAsync(Cliente cliente)
+        public async Task<int> AtualizarClienteAsync(Cliente cliente)
         {
             using IDbConnection db = new SqlConnection(_connectionString);
             var parameters = new
@@ -41,22 +41,20 @@ namespace Poc.ThomasGreg.Infra.Repositories
                 cliente.Logotipo,
             };
 
-            await db.ExecuteAsync("sp_AtualizarCliente", parameters, commandType: CommandType.StoredProcedure);
+            return await db.ExecuteAsync("sp_AtualizarCliente", parameters, commandType: CommandType.StoredProcedure);
         }
         public async Task<Cliente?> ObterClientePorIdAsync(Guid id)
         {
             var sql = @"SELECT * FROM Cliente WHERE ID = @ID";
 
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            using IDbConnection db = new SqlConnection(_connectionString);
+            var parameters = new
             {
-                var parameters = new
-                {
-                    id
-                };
-                var cliente = await db.QueryFirstOrDefaultAsync<Cliente>(sql, parameters);
+                id
+            };
+            var cliente = await db.QueryFirstOrDefaultAsync<Cliente>(sql, parameters);
 
-                return cliente;
-            }
+            return cliente;
         }
         public async Task RemoverClienteAsync(Guid id)
         {
@@ -67,6 +65,17 @@ namespace Poc.ThomasGreg.Infra.Repositories
             };
 
             await db.ExecuteAsync("sp_RemoverCliente", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<Cliente>> ObterClientesAsync()
+        {
+            var sql = @"SELECT * FROM Cliente";
+
+            using IDbConnection db = new SqlConnection(_connectionString);
+ 
+            var clientes = await db.QueryAsync<Cliente>(sql);
+
+            return clientes;
         }
     }
 }

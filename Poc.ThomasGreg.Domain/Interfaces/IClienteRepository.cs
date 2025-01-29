@@ -6,7 +6,8 @@ namespace Poc.ThomasGreg.Domain.Interfaces
     {
         public Task<int> CriarClienteAsync(Cliente cliente);
         public Task<Cliente?> ObterClientePorIdAsync(Guid id);
-        public Task AtualizarClienteAsync(Cliente cliente);
+        public Task<IEnumerable<Cliente>> ObterClientesAsync();
+        public Task<int> AtualizarClienteAsync(Cliente cliente);
         public Task RemoverClienteAsync(Guid id);
     }
 }

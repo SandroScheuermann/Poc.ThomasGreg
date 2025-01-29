@@ -30,5 +30,21 @@ namespace Poc.ThomasGreg.Infra.Repositories
 
             return result;
         }
+
+        public async Task<Usuario?> ObterUsuarioPorEmailAsync(string email)
+        {
+            var sql = @"SELECT * FROM Usuario WHERE Email = @EMAIL";
+
+            using IDbConnection db = new SqlConnection(_connectionString);
+            var parameters = new
+            {
+                email
+            };
+
+            var result = await db.QueryFirstOrDefaultAsync<Usuario>(sql, parameters);
+
+            return result;
+
+        }
     }
 }
