@@ -5,7 +5,8 @@ using Poc.ThomasGreg.Application.Services.Interfaces;
 
 namespace Poc.ThomasGreg.API.Controllers
 {
-    [ApiController] 
+	[ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class LogradouroController : ControllerBase
     {
