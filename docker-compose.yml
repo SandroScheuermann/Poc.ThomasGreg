@@ -11,10 +11,12 @@ services:
       - "1433:1433"
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "P@ssw0rd" 
+      SA_PASSWORD: "P@ssw0rd"
     volumes:
       - db_data:/var/opt/mssql
-    restart: unless-stopped 
+    restart: unless-stopped
+    networks:
+      - thomasgreg_network
 
   api:
     build:
@@ -22,12 +24,16 @@ services:
       dockerfile: /Poc.ThomasGreg.API/Dockerfile
     container_name: api
     ports:
+      - "5000:5000"
       - "5001:5001"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=ThomasGregDb;User=sa;Password=P@ssw0rd;TrustServerCertificate=True;Integrated Security=False;
+      - ASPNETCORE_ENVIRONMENT=Development     
+      - ConnectionString=Server=db,1433;Database=DesafioThomasGreg;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True;
+      - ASPNETCORE_URLS=http://+:5000;http://+:5001
     depends_on:
-      - db  
+      - db 
+    networks:
+      - thomasgreg_network
 
   mvc:
     build:
@@ -40,7 +46,9 @@ services:
       - api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - API_BASE_URL=http://api:5001 
+      - API_BASE_URL=http://api:5000/api/
+    networks:
+      - thomasgreg_network
 
 networks:
   thomasgreg_network:

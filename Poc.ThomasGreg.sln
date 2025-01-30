@@ -13,13 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Tests", "5 - Tests", "{DDAF8A9B-6954-4A01-942E-236324E01FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poc.ThomasGreg.Domain", "Poc.ThomasGreg.Domain\Poc.ThomasGreg.Domain.csproj", "{B5176570-512B-47EE-B2A2-6D90AFFB5065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poc.ThomasGreg.Domain", "Poc.ThomasGreg.Domain\Poc.ThomasGreg.Domain.csproj", "{B5176570-512B-47EE-B2A2-6D90AFFB5065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poc.ThomasGreg.Application", "Poc.ThomasGreg.Application\Poc.ThomasGreg.Application.csproj", "{1C3C5F0A-27E4-4437-B75C-3E3E21293B5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poc.ThomasGreg.Application", "Poc.ThomasGreg.Application\Poc.ThomasGreg.Application.csproj", "{1C3C5F0A-27E4-4437-B75C-3E3E21293B5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poc.ThomasGreg.Infra", "Poc.ThomasGreg.Infra\Poc.ThomasGreg.Infra.csproj", "{E7801FB2-E8C0-4BCB-865E-B93F6865C6E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poc.ThomasGreg.Infra", "Poc.ThomasGreg.Infra\Poc.ThomasGreg.Infra.csproj", "{E7801FB2-E8C0-4BCB-865E-B93F6865C6E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poc.ThomasGreg.Test", "Poc.ThomasGreg.Test\Poc.ThomasGreg.Test.csproj", "{8D0CAD77-5A44-46EC-A487-A6CF49F3D9CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poc.ThomasGreg.Test", "Poc.ThomasGreg.Test\Poc.ThomasGreg.Test.csproj", "{8D0CAD77-5A44-46EC-A487-A6CF49F3D9CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poc.ThomasGreg.MVC", "Poc.ThomasGreg\Poc.ThomasGreg.MVC.csproj", "{F042537F-2D8C-4359-AC34-BACE829C9152}"
 EndProject

@@ -54,20 +54,7 @@ BEGIN
         Email = @Email,
         Logotipo = @Logotipo
     WHERE Id = @Id;
-END
-
-GO 
-
-CREATE PROCEDURE sp_CriarCliente
-    @Id UNIQUEIDENTIFIER,
-    @Nome NVARCHAR(100),
-    @Email NVARCHAR(100),
-    @Logotipo VARBINARY(MAX)
-AS
-BEGIN
-    INSERT INTO Cliente (Id, Nome, Email, Logotipo)
-    VALUES (@Id, @Nome, @Email, @Logotipo);
-END
+END 
 
 GO 
 
@@ -116,7 +103,7 @@ GO
 
 CREATE PROCEDURE sp_AtualizarLogradouro
     @Id UNIQUEIDENTIFIER,
-    @ClienteId UNIQUEIDENTIFIER
+    @ClienteId UNIQUEIDENTIFIER,
     @Endereco NVARCHAR(255)
 AS
 BEGIN

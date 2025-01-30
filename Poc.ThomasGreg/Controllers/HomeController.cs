@@ -11,8 +11,9 @@ namespace Poc.ThomasGreg.MVC.Controllers
         public HomeController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:5001/api/");
-        }
+			_httpClient.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URL"));
+            
+		}
 
         public IActionResult Index()
         { 

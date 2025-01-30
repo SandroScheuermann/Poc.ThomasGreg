@@ -1,20 +1,19 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Poc.ThomasGreg.Domain.Entities;
 using Poc.ThomasGreg.Domain.Interfaces;
 using System.Data;
 
 namespace Poc.ThomasGreg.Infra.Repositories
 {
-    public class ClienteRepository : IClienteRepository
+	public class ClienteRepository : IClienteRepository
     {
         private readonly string? _connectionString;
 
-        public ClienteRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
-        }
+        public ClienteRepository()
+		{
+			_connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+		}
 
         public async Task<int> CriarClienteAsync(Cliente cliente)
         {

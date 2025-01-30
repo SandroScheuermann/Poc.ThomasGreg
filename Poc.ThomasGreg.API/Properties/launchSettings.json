@@ -32,10 +32,11 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-        "environmentVariables": {
-            "ASPNETCORE_HTTPS_PORTS": "5001",
-            "ASPNETCORE_HTTP_PORTS": "5000"
-        },
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORTS": "5001",
+        "ASPNETCORE_HTTP_PORTS": "5000",
+        "ConnectionString": "Server=localhost,1433;Database=DesafioThomasGreg;User Id=sa;Password=P@ssw0rd;"
+      },
       "publishAllPorts": true,
       "useSSL": true
     }

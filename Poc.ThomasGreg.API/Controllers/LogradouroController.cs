@@ -9,11 +9,11 @@ namespace Poc.ThomasGreg.API.Controllers
     [Route("api/[controller]")]
     public class LogradouroController : ControllerBase
     {
-        public readonly ILogradouroService _logradouroService;
+        public readonly ILogradouroService _logradouroService; 
 
         public LogradouroController(ILogradouroService logradouroService)
         {
-            _logradouroService = logradouroService;
+            _logradouroService = logradouroService; 
         }
 
         [HttpPost]

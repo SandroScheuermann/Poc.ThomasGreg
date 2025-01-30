@@ -2,7 +2,7 @@ using Microsoft.IdentityModel.Tokens;
 using Poc.ThomasGreg.Application.Services;
 using Poc.ThomasGreg.Application.Services.Interfaces;
 using Poc.ThomasGreg.Domain.Interfaces;
-using Poc.ThomasGreg.Infra.Repositories;
+using Poc.ThomasGreg.Infra.Repositories; 
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,6 +58,6 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers(); 
 
 app.Run();

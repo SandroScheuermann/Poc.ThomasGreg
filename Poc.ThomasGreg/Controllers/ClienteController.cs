@@ -12,9 +12,10 @@ namespace Poc.ThomasGreg.MVC.Controllers
         public ClienteController(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:5001/api/");
-             
-            var tokenJson = httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
+
+            _httpClient.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URL"));
+
+			var tokenJson = httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
 
             if (!string.IsNullOrEmpty(tokenJson))
             {
@@ -92,7 +93,7 @@ namespace Poc.ThomasGreg.MVC.Controllers
                 return View(cliente); 
             }
              
-            return View("Erro");
+            return View("Error");
         } 
 
         [HttpPost]
